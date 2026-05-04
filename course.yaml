@@ -14,7 +14,7 @@ spec:
         app.kubernetes.io/name: app-2048-albin25
     spec:
       containers:
-      - image: 991524241826.dkr.ecr.ap-south-2.amazonaws.com/albin25-course-repo:latest
+      - image: 991524241826.dkr.ecr.ap-south-2.amazonaws.com/albin25/course:latest
         imagePullPolicy: Always
         name: app-2048-albin25
         ports:
