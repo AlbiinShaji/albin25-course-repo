@@ -1,0 +1,28 @@
+version: 0.2
+ 
+env:
+  variables:
+    AWS_REGION: "ap-south-2"
+    ECR_REPO: "991524241826.dkr.ecr.ap-south-2.amazonaws.com/albin25-course-repo"
+ 
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region $AWS_REGION |
+          docker login --username AWS --password-stdin
+            991524241826.dkr.ecr.$AWS_REGION.amazonaws.com
+      - export IMAGE_TAG=latest
+  build:
+    commands:
+      - docker build -t $ECR_REPO:$IMAGE_TAG .
+      - docker tag $ECR_REPO:$IMAGE_TAG $ECR_REPO:$IMAGE_TAG
+  post_build:
+    commands:
+      - docker push $ECR_REPO:$IMAGE_TAG
+      - printf '[{"name":"app-2048-albin25",
+          "imageUri":"%s"}]' \
+          $ECR_REPO:$IMAGE_TAG > imagedefinitions.json
+ 
+artifacts:
+  files: 
+    - imagedefinitions.json
